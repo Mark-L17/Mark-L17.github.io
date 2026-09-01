@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="面向员工的网络安全警示学习页面：先停一下，再做判断。">
+  <meta name="theme-color" content="#06142a">
+  <title>网络安全警示学习｜先停一下，再做判断</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #06142a;
+      --foreground: #eaf6ff;
+      --muted: #8eabc8;
+      --border: rgba(135, 191, 235, 0.18);
+      --navy-950: #030c1b;
+      --navy-900: #06142a;
+      --electric: #128cff;
+      --cyan: #54d7ff;
+      --warning: #ff6b3d;
+      --ice: #eaf6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--background);
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    .site-shell {
+      min-height: 100vh;
+      min-height: 100svh;
+      position: relative;
+      overflow-x: hidden;
+      background:
+        linear-gradient(90deg, rgba(84, 215, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(84, 215, 255, 0.04) 1px, transparent 1px),
+        radial-gradient(circle at 72% 35%, rgba(18, 140, 255, 0.18), transparent 29rem),
+        linear-gradient(145deg, var(--navy-950), var(--navy-900) 48%, #071c38);
+      background-size: 56px 56px, 56px 56px, auto, auto;
+    }
+
+    .site-shell::before {
+      content: "";
+      position: absolute;
+      width: 580px;
+      height: 580px;
+      border: 1px solid rgba(84, 215, 255, 0.12);
+      border-radius: 50%;
+      right: -250px;
+      top: -250px;
+      box-shadow:
+        0 0 0 90px rgba(84, 215, 255, 0.02),
+        0 0 0 180px rgba(84, 215, 255, 0.02);
+      pointer-events: none;
+    }
+
+    .topbar {
+      width: min(1180px, calc(100% - 48px));
+      height: 88px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: var(--electric);
+      color: #fff;
+      clip-path: polygon(50% 0, 92% 18%, 86% 74%, 50% 100%, 14% 74%, 8% 18%);
+    }
+
+    .brand-mark svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand b,
+    .brand small {
+      display: block;
+    }
+
+    .brand b {
+      font-size: 15px;
+      letter-spacing: 0.04em;
+    }
+
+    .brand small {
+      margin-top: 3px;
+      color: var(--muted);
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 9px;
+      letter-spacing: 0.17em;
+    }
+
+    .learning-status {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #9fb9d2;
+      font-size: 12px;
+    }
+
+    .learning-status strong {
+      color: var(--cyan);
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-weight: 600;
+    }
+
+    .progress-line {
+      width: 82px;
+      height: 3px;
+      background: #1a3d62;
+    }
+
+    .progress-line i {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px rgba(84, 215, 255, 0.55);
+    }
+
+    .hero {
+      width: min(1180px, calc(100% - 48px));
+      min-height: calc(100vh - 88px);
+      min-height: calc(100svh - 88px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 880px);
+      align-items: center;
+      padding: 54px 0 74px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--cyan);
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--warning);
+      box-shadow:
+        0 0 0 5px rgba(255, 107, 61, 0.12),
+        0 0 18px rgba(255, 107, 61, 0.7);
+    }
+
+    h1 {
+      margin: 28px 0 24px;
+      font-family: "Microsoft JhengHei", "Microsoft YaHei", sans-serif;
+      font-size: clamp(48px, 5.6vw, 76px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.055em;
+    }
+
+    h1 span {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px #8bdfff;
+      text-shadow: 0 0 32px rgba(18, 140, 255, 0.18);
+    }
+
+    .hero-lead {
+      max-width: 570px;
+      margin: 0;
+      color: #a9bfd4;
+      font-size: 16px;
+      line-height: 1.95;
+    }
+
+    .hero-lead strong {
+      color: var(--ice);
+      font-weight: 700;
+    }
+
+    .pulse-track {
+      max-width: 620px;
+      margin-top: 54px;
+      border-top: 1px solid rgba(84, 215, 255, 0.11);
+      position: relative;
+    }
+
+    .pulse-track > span {
+      position: absolute;
+      top: -19px;
+      left: 0;
+      color: #4e708f;
+      font-family: Consolas, monospace;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+    }
+
+    .pulse-track svg {
+      display: block;
+      width: 100%;
+      height: 54px;
+      overflow: visible;
+    }
+
+    .pulse-track path {
+      fill: none;
+      stroke-linecap: square;
+      stroke-linejoin: bevel;
+    }
+
+    .pulse-base {
+      stroke: #1b466b;
+      stroke-width: 1;
+    }
+
+    .pulse-hot {
+      stroke: var(--cyan);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 5px rgba(84, 215, 255, 0.55));
+      stroke-dasharray: 230;
+      animation: pulseDraw 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseDraw {
+      from {
+        stroke-dashoffset: 230;
+        opacity: 0.45;
+      }
+      to {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 58px 0 72px;
+      }
+
+      .hero-copy {
+        max-width: 690px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar,
+      .hero {
+        width: min(100% - 30px, 1180px);
+      }
+
+      .topbar {
+        height: 72px;
+      }
+
+      .learning-status > span,
+      .progress-line {
+        display: none;
+      }
+
+      .hero {
+        min-height: calc(100vh - 72px);
+        min-height: calc(100svh - 72px);
+        padding: 46px 0 62px;
+      }
+
+      h1 {
+        margin-top: 22px;
+        font-size: clamp(39px, 12vw, 54px);
+        letter-spacing: -0.07em;
+      }
+
+      .hero-lead {
+        font-size: 14px;
+      }
+
+      .pulse-track {
+        margin-top: 44px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pulse-hot {
+        animation: none;
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="site-shell" id="top">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="网络安全警示学习首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </span>
+        <span>
+          <b>安全意识学习站</b>
+          <small>SECURITY AWARENESS</small>
+        </span>
+      </a>
+
+      <div class="learning-status" aria-label="单页警示学习">
+        <span>警示学习</span>
+        <div class="progress-line" aria-hidden="true"><i></i></div>
+        <strong>01 / 01</strong>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <div class="eyebrow">
+          <span class="live-dot" aria-hidden="true"></span>
+          员工网络安全警示学习
+        </div>
+
+        <h1 id="page-title">
+          一次犹豫，
+          <span>可能就是攻击者的入口。</span>
+        </h1>
+
+        <p class="hero-lead">
+          攻击者不需要攻破所有系统，只需要等一个人点开链接、交出验证码，或忽略一次异常。
+          <strong>先停一下，再做判断。</strong>
+        </p>
+
+        <div class="pulse-track" aria-label="安全警戒线">
+          <span>SECURITY PULSE</span>
+          <svg viewBox="0 0 620 54" role="img" aria-label="持续监测的安全脉冲波形">
+            <path class="pulse-base" d="M0 31h178l12-8 12 8h46l12-22 19 40 18-18h58l10-8 12 8h243"></path>
+            <path class="pulse-hot" d="M178 31l12-8 12 8h46l12-22 19 40 18-18h58"></path>
+          </svg>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
